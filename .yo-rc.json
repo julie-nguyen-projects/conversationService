@@ -1,0 +1,35 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.epitech.pgt2019"
+    },
+    "jhipsterVersion": "5.8.2",
+    "applicationType": "microservice",
+    "baseName": "conversationService",
+    "packageName": "com.epitech.pgt2019",
+    "packageFolder": "com/epitech/pgt2019",
+    "serverPort": "8380",
+    "authenticationType": "jwt",
+    "cacheProvider": "hazelcast",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "NjA2NGUxODI4NDExNDQyNzUzMDVmMjE2N2NkZGQzZmViN2ViYTkyNGU4MWY1ZWM2MWVkYTg3NTVlN2FhMTg5MjkwZjBiYjY1MWRjNGFmYjQ4Y2EzNTExODJhZWNmNDUzY2Q3YTM0NjJjYzQzZjZkOTE5ODljNDExZmIyOTI5OGE=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true,
+    "skipUserManagement": true
+  }
+}
