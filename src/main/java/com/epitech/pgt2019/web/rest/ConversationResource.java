@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,7 +41,7 @@ public class ConversationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/conversations")
-    public ResponseEntity<ConversationDTO> createConversation(@RequestBody ConversationDTO conversationDTO) throws URISyntaxException {
+    public ResponseEntity<ConversationDTO> createConversation(@Valid @RequestBody ConversationDTO conversationDTO) throws URISyntaxException {
         log.debug("REST request to save Conversation : {}", conversationDTO);
         if (conversationDTO.getId() != null) {
             throw new BadRequestAlertException("A new conversation cannot already have an ID", ENTITY_NAME, "idexists");
@@ -61,7 +62,7 @@ public class ConversationResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/conversations")
-    public ResponseEntity<ConversationDTO> updateConversation(@RequestBody ConversationDTO conversationDTO) throws URISyntaxException {
+    public ResponseEntity<ConversationDTO> updateConversation(@Valid @RequestBody ConversationDTO conversationDTO) throws URISyntaxException {
         log.debug("REST request to update Conversation : {}", conversationDTO);
         if (conversationDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -75,10 +76,11 @@ public class ConversationResource {
     /**
      * GET  /conversations : get all the conversations.
      *
+     * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many)
      * @return the ResponseEntity with status 200 (OK) and the list of conversations in body
      */
     @GetMapping("/conversations")
-    public List<ConversationDTO> getAllConversations() {
+    public List<ConversationDTO> getAllConversations(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
         log.debug("REST request to get all Conversations");
         return conversationService.findAll();
     }

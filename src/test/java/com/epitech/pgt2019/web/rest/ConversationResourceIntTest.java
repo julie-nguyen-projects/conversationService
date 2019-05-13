@@ -3,6 +3,7 @@ package com.epitech.pgt2019.web.rest;
 import com.epitech.pgt2019.ConversationServiceApp;
 
 import com.epitech.pgt2019.domain.Conversation;
+import com.epitech.pgt2019.domain.UserConv;
 import com.epitech.pgt2019.repository.ConversationRepository;
 import com.epitech.pgt2019.service.ConversationService;
 import com.epitech.pgt2019.service.dto.ConversationDTO;
@@ -12,9 +13,12 @@ import com.epitech.pgt2019.web.rest.errors.ExceptionTranslator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -23,12 +27,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 import static com.epitech.pgt2019.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -44,8 +50,14 @@ public class ConversationResourceIntTest {
     @Autowired
     private ConversationRepository conversationRepository;
 
+    @Mock
+    private ConversationRepository conversationRepositoryMock;
+
     @Autowired
     private ConversationMapper conversationMapper;
+
+    @Mock
+    private ConversationService conversationServiceMock;
 
     @Autowired
     private ConversationService conversationService;
@@ -86,6 +98,10 @@ public class ConversationResourceIntTest {
      */
     public static Conversation createEntity() {
         Conversation conversation = new Conversation();
+        // Add required entity
+        UserConv userConv = UserConvResourceIntTest.createEntity();
+        userConv.setId("fixed-id-for-tests");
+        conversation.getUserConvs().add(userConv);
         return conversation;
     }
 
@@ -143,6 +159,39 @@ public class ConversationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(conversation.getId())));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllConversationsWithEagerRelationshipsIsEnabled() throws Exception {
+        ConversationResource conversationResource = new ConversationResource(conversationServiceMock);
+        when(conversationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restConversationMockMvc = MockMvcBuilders.standaloneSetup(conversationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restConversationMockMvc.perform(get("/api/conversations?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(conversationServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllConversationsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        ConversationResource conversationResource = new ConversationResource(conversationServiceMock);
+            when(conversationServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restConversationMockMvc = MockMvcBuilders.standaloneSetup(conversationResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restConversationMockMvc.perform(get("/api/conversations?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(conversationServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     public void getConversation() throws Exception {
         // Initialize the database

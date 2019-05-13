@@ -1,7 +1,30 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "conversationService",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "conversation",
+            "otherEntityName": "conversation",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "message",
+            "otherEntityRelationshipNameUndefined": false
+        },
+        {
+            "relationshipName": "userConv",
+            "otherEntityName": "userConv",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "message",
+            "otherEntityRelationshipNameUndefined": true
+        }
+    ],
     "fields": [
         {
             "fieldName": "content",

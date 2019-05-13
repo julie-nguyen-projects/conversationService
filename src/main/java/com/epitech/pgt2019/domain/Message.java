@@ -1,6 +1,7 @@
 package com.epitech.pgt2019.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -29,6 +30,16 @@ public class Message implements Serializable {
     @NotNull
     @Field("creation_date")
     private LocalDate creationDate;
+
+    @DBRef
+    @Field("conversation")
+    @JsonIgnoreProperties("messages")
+    private Conversation conversation;
+
+    @DBRef
+    @Field("userConv")
+    @JsonIgnoreProperties("messages")
+    private UserConv userConv;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -63,6 +74,32 @@ public class Message implements Serializable {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Conversation getConversation() {
+        return conversation;
+    }
+
+    public Message conversation(Conversation conversation) {
+        this.conversation = conversation;
+        return this;
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+    }
+
+    public UserConv getUserConv() {
+        return userConv;
+    }
+
+    public Message userConv(UserConv userConv) {
+        this.userConv = userConv;
+        return this;
+    }
+
+    public void setUserConv(UserConv userConv) {
+        this.userConv = userConv;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

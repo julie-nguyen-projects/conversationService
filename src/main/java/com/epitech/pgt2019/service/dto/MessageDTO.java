@@ -18,6 +18,10 @@ public class MessageDTO implements Serializable {
     private LocalDate creationDate;
 
 
+    private String conversationId;
+
+    private String userConvId;
+
     public String getId() {
         return id;
     }
@@ -40,6 +44,22 @@ public class MessageDTO implements Serializable {
 
     public void setCreationDate(LocalDate creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public String getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public String getUserConvId() {
+        return userConvId;
+    }
+
+    public void setUserConvId(String userConvId) {
+        this.userConvId = userConvId;
     }
 
     @Override
@@ -69,6 +89,8 @@ public class MessageDTO implements Serializable {
             "id=" + getId() +
             ", content='" + getContent() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
+            ", conversation=" + getConversationId() +
+            ", userConv=" + getUserConvId() +
             "}";
     }
 }

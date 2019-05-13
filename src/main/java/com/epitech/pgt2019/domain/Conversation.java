@@ -5,8 +5,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,10 @@ public class Conversation implements Serializable {
     @Id
     private String id;
 
+    @DBRef
+    @Field("userConvs")
+    private Set<UserConv> userConvs = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
         return id;
@@ -27,6 +34,31 @@ public class Conversation implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Set<UserConv> getUserConvs() {
+        return userConvs;
+    }
+
+    public Conversation userConvs(Set<UserConv> userConvs) {
+        this.userConvs = userConvs;
+        return this;
+    }
+
+    public Conversation addUserConv(UserConv userConv) {
+        this.userConvs.add(userConv);
+        userConv.getConversations().add(this);
+        return this;
+    }
+
+    public Conversation removeUserConv(UserConv userConv) {
+        this.userConvs.remove(userConv);
+        userConv.getConversations().remove(this);
+        return this;
+    }
+
+    public void setUserConvs(Set<UserConv> userConvs) {
+        this.userConvs = userConvs;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

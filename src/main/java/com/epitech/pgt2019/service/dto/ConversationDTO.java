@@ -1,5 +1,8 @@
 package com.epitech.pgt2019.service.dto;
+import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -10,12 +13,22 @@ public class ConversationDTO implements Serializable {
     private String id;
 
 
+    private Set<UserConvDTO> userConvs = new HashSet<>();
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Set<UserConvDTO> getUserConvs() {
+        return userConvs;
+    }
+
+    public void setUserConvs(Set<UserConvDTO> userConvs) {
+        this.userConvs = userConvs;
     }
 
     @Override

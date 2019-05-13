@@ -1,7 +1,16 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "conversationService",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "conversation",
+            "otherEntityName": "conversation",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "userConv",
+            "otherEntityRelationshipNameUndefined": false
+        }
+    ],
     "fields": [],
     "dto": "mapstruct",
     "searchEngine": false,
