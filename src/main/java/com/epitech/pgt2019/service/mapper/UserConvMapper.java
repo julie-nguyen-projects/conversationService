@@ -12,6 +12,8 @@ import org.mapstruct.*;
 public interface UserConvMapper extends EntityMapper<UserConvDTO, UserConv> {
 
 
+    @Mapping(target = "conversations", ignore = true)
+    UserConv toEntity(UserConvDTO userConvDTO);
 
     default UserConv fromId(String id) {
         if (id == null) {

@@ -7,6 +7,8 @@ import com.epitech.pgt2019.service.mapper.ConversationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -51,11 +53,20 @@ public class ConversationService {
      */
     public List<ConversationDTO> findAll() {
         log.debug("Request to get all Conversations");
-        return conversationRepository.findAll().stream()
+        return conversationRepository.findAllWithEagerRelationships().stream()
             .map(conversationMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     * Get all the Conversation with eager load of many-to-many relationships.
+     *
+     * @return the list of entities
+     */
+    public Page<ConversationDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return conversationRepository.findAllWithEagerRelationships(pageable).map(conversationMapper::toDto);
+    }
+    
 
     /**
      * Get one conversation by id.
@@ -65,7 +76,7 @@ public class ConversationService {
      */
     public Optional<ConversationDTO> findOne(String id) {
         log.debug("Request to get Conversation : {}", id);
-        return conversationRepository.findById(id)
+        return conversationRepository.findOneWithEagerRelationships(id)
             .map(conversationMapper::toDto);
     }
 
