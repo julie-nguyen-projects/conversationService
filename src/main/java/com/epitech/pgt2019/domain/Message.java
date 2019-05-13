@@ -36,6 +36,11 @@ public class Message implements Serializable {
     @JsonIgnoreProperties("messages")
     private Conversation conversation;
 
+    @DBRef
+    @Field("userConv")
+    @JsonIgnoreProperties("messages")
+    private UserConv userConv;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
         return id;
@@ -82,6 +87,19 @@ public class Message implements Serializable {
 
     public void setConversation(Conversation conversation) {
         this.conversation = conversation;
+    }
+
+    public UserConv getUserConv() {
+        return userConv;
+    }
+
+    public Message userConv(UserConv userConv) {
+        this.userConv = userConv;
+        return this;
+    }
+
+    public void setUserConv(UserConv userConv) {
+        this.userConv = userConv;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

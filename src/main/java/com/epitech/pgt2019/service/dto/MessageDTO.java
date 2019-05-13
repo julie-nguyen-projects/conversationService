@@ -20,6 +20,8 @@ public class MessageDTO implements Serializable {
 
     private String conversationId;
 
+    private String userConvId;
+
     public String getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class MessageDTO implements Serializable {
         this.conversationId = conversationId;
     }
 
+    public String getUserConvId() {
+        return userConvId;
+    }
+
+    public void setUserConvId(String userConvId) {
+        this.userConvId = userConvId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +90,7 @@ public class MessageDTO implements Serializable {
             ", content='" + getContent() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             ", conversation=" + getConversationId() +
+            ", userConv=" + getUserConvId() +
             "}";
     }
 }

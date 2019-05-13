@@ -4,6 +4,7 @@ import com.epitech.pgt2019.ConversationServiceApp;
 
 import com.epitech.pgt2019.domain.Message;
 import com.epitech.pgt2019.domain.Conversation;
+import com.epitech.pgt2019.domain.UserConv;
 import com.epitech.pgt2019.repository.MessageRepository;
 import com.epitech.pgt2019.service.MessageService;
 import com.epitech.pgt2019.service.dto.MessageDTO;
@@ -101,6 +102,10 @@ public class MessageResourceIntTest {
         Conversation conversation = ConversationResourceIntTest.createEntity();
         conversation.setId("fixed-id-for-tests");
         message.setConversation(conversation);
+        // Add required entity
+        UserConv userConv = UserConvResourceIntTest.createEntity();
+        userConv.setId("fixed-id-for-tests");
+        message.setUserConv(userConv);
         return message;
     }
 

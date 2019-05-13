@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Message and its DTO MessageDTO.
  */
-@Mapper(componentModel = "spring", uses = {ConversationMapper.class})
+@Mapper(componentModel = "spring", uses = {ConversationMapper.class, UserConvMapper.class})
 public interface MessageMapper extends EntityMapper<MessageDTO, Message> {
 
     @Mapping(source = "conversation.id", target = "conversationId")
+    @Mapping(source = "userConv.id", target = "userConvId")
     MessageDTO toDto(Message message);
 
     @Mapping(source = "conversationId", target = "conversation")
+    @Mapping(source = "userConvId", target = "userConv")
     Message toEntity(MessageDTO messageDTO);
 
     default Message fromId(String id) {
