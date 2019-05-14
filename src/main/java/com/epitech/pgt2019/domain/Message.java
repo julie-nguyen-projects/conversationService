@@ -9,14 +9,13 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * A Message.
  */
 @Document(collection = "message")
-public class Message implements Serializable {
+public class Message extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -26,10 +25,6 @@ public class Message implements Serializable {
     @NotNull
     @Field("content")
     private String content;
-
-    @NotNull
-    @Field("creation_date")
-    private LocalDate creationDate;
 
     @DBRef
     @Field("conversation")
@@ -61,19 +56,6 @@ public class Message implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public Message creationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-        return this;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
     }
 
     public Conversation getConversation() {
@@ -128,7 +110,6 @@ public class Message implements Serializable {
         return "Message{" +
             "id=" + getId() +
             ", content='" + getContent() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
             "}";
     }
 }

@@ -1,5 +1,4 @@
 package com.epitech.pgt2019.service.dto;
-import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,9 +12,6 @@ public class MessageDTO implements Serializable {
 
     @NotNull
     private String content;
-
-    @NotNull
-    private LocalDate creationDate;
 
 
     private String conversationId;
@@ -36,14 +32,6 @@ public class MessageDTO implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
     }
 
     public String getConversationId() {
@@ -88,7 +76,6 @@ public class MessageDTO implements Serializable {
         return "MessageDTO{" +
             "id=" + getId() +
             ", content='" + getContent() + "'" +
-            ", creationDate='" + getCreationDate() + "'" +
             ", conversation=" + getConversationId() +
             ", userConv=" + getUserConvId() +
             "}";
