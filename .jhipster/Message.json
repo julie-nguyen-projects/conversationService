@@ -22,20 +22,13 @@
             ],
             "otherEntityField": "id",
             "otherEntityRelationshipName": "message",
-            "otherEntityRelationshipNameUndefined": true
+            "otherEntityRelationshipNameUndefined": false
         }
     ],
     "fields": [
         {
             "fieldName": "content",
             "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "creationDate",
-            "fieldType": "LocalDate",
             "fieldValidateRules": [
                 "required"
             ]

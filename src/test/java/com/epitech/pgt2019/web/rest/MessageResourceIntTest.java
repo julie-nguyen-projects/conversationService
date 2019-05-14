@@ -25,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 
@@ -47,9 +45,6 @@ public class MessageResourceIntTest {
 
     private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT = "BBBBBBBBBB";
-
-    private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private MessageRepository messageRepository;
@@ -96,8 +91,7 @@ public class MessageResourceIntTest {
      */
     public static Message createEntity() {
         Message message = new Message()
-            .content(DEFAULT_CONTENT)
-            .creationDate(DEFAULT_CREATION_DATE);
+            .content(DEFAULT_CONTENT);
         // Add required entity
         Conversation conversation = ConversationResourceIntTest.createEntity();
         conversation.setId("fixed-id-for-tests");
@@ -131,7 +125,6 @@ public class MessageResourceIntTest {
         assertThat(messageList).hasSize(databaseSizeBeforeCreate + 1);
         Message testMessage = messageList.get(messageList.size() - 1);
         assertThat(testMessage.getContent()).isEqualTo(DEFAULT_CONTENT);
-        assertThat(testMessage.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
     }
 
     @Test
@@ -172,24 +165,6 @@ public class MessageResourceIntTest {
     }
 
     @Test
-    public void checkCreationDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = messageRepository.findAll().size();
-        // set the field null
-        message.setCreationDate(null);
-
-        // Create the Message, which fails.
-        MessageDTO messageDTO = messageMapper.toDto(message);
-
-        restMessageMockMvc.perform(post("/api/messages")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(messageDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Message> messageList = messageRepository.findAll();
-        assertThat(messageList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
     public void getAllMessages() throws Exception {
         // Initialize the database
         messageRepository.save(message);
@@ -199,8 +174,7 @@ public class MessageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(message.getId())))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
-            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())));
+            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())));
     }
     
     @Test
@@ -213,8 +187,7 @@ public class MessageResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(message.getId()))
-            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
-            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()));
+            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()));
     }
 
     @Test
@@ -234,8 +207,7 @@ public class MessageResourceIntTest {
         // Update the message
         Message updatedMessage = messageRepository.findById(message.getId()).get();
         updatedMessage
-            .content(UPDATED_CONTENT)
-            .creationDate(UPDATED_CREATION_DATE);
+            .content(UPDATED_CONTENT);
         MessageDTO messageDTO = messageMapper.toDto(updatedMessage);
 
         restMessageMockMvc.perform(put("/api/messages")
@@ -248,7 +220,6 @@ public class MessageResourceIntTest {
         assertThat(messageList).hasSize(databaseSizeBeforeUpdate);
         Message testMessage = messageList.get(messageList.size() - 1);
         assertThat(testMessage.getContent()).isEqualTo(UPDATED_CONTENT);
-        assertThat(testMessage.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
     }
 
     @Test
