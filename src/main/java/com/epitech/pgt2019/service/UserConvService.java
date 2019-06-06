@@ -33,13 +33,14 @@ public class UserConvService {
 
     /**
      * Save a userConv.
-     *
+     * @param newId the newId of the userConv
      * @param userConvDTO the entity to save
      * @return the persisted entity
      */
-    public UserConvDTO save(UserConvDTO userConvDTO) {
+    public UserConvDTO save(String newId, UserConvDTO userConvDTO) {
         log.debug("Request to save UserConv : {}", userConvDTO);
         UserConv userConv = userConvMapper.toEntity(userConvDTO);
+        userConv.setId(newId);
         userConv = userConvRepository.save(userConv);
         return userConvMapper.toDto(userConv);
     }
