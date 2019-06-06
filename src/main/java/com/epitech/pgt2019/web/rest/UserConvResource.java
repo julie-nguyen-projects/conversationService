@@ -35,17 +35,18 @@ public class UserConvResource {
     /**
      * POST  /user-convs : Create a new userConv.
      *
+     * @param newId the new id of a userConv
      * @param userConvDTO the userConvDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new userConvDTO, or with status 400 (Bad Request) if the userConv has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/user-convs")
-    public ResponseEntity<UserConvDTO> createUserConv(@RequestBody UserConvDTO userConvDTO) throws URISyntaxException {
+    @PostMapping("/user-convs/{newId}")
+    public ResponseEntity<UserConvDTO> createUserConv(@PathVariable("newId") String newId, @RequestBody UserConvDTO userConvDTO) throws URISyntaxException {
         log.debug("REST request to save UserConv : {}", userConvDTO);
         if (userConvDTO.getId() != null) {
             throw new BadRequestAlertException("A new userConv cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserConvDTO result = userConvService.save(userConvDTO);
+        UserConvDTO result = userConvService.save(newId, userConvDTO);
         return ResponseEntity.created(new URI("/api/user-convs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -54,19 +55,20 @@ public class UserConvResource {
     /**
      * PUT  /user-convs : Updates an existing userConv.
      *
+     * @param newId the new id of a userConv
      * @param userConvDTO the userConvDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated userConvDTO,
      * or with status 400 (Bad Request) if the userConvDTO is not valid,
      * or with status 500 (Internal Server Error) if the userConvDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/user-convs")
-    public ResponseEntity<UserConvDTO> updateUserConv(@RequestBody UserConvDTO userConvDTO) throws URISyntaxException {
+    @PutMapping("/user-convs/{newId}")
+    public ResponseEntity<UserConvDTO> updateUserConv(@PathVariable("newId") String newId, @RequestBody UserConvDTO userConvDTO) throws URISyntaxException {
         log.debug("REST request to update UserConv : {}", userConvDTO);
         if (userConvDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        UserConvDTO result = userConvService.save(userConvDTO);
+        UserConvDTO result = userConvService.save(newId, userConvDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userConvDTO.getId().toString()))
             .body(result);
